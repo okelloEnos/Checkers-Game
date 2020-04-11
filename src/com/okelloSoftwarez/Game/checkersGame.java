@@ -5,6 +5,8 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 
 public class checkersGame extends Application {
@@ -83,7 +85,6 @@ public class checkersGame extends Application {
                     checkersPiece otherPiece = result.getPiece();
                     board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
                     pieceGroup.getChildren().remove(otherPiece);
-
                     break;
 
                 case NONE:
@@ -95,11 +96,31 @@ public class checkersGame extends Application {
                     board[x0][y0].setPiece(null);
                     board[newX][newY].setPiece(piece);
                     break;
+
+                case KING:
+                    piece.move(newX, newY);
+                    board[x0][y0].setPiece(null);
+                    board[newX][newY].setPiece(piece);
+//                    piece.setBackgroundKing(piece);
+                    piece.resize(newX, newY);
+                    break;
             }
         });
         return piece;
     }
 
+    public void setBackgroundKing(checkersPiece piece) {
+
+        Ellipse king = new Ellipse(checkersGame.TILE_SIZE * 0.3125, checkersGame.TILE_SIZE * 0.26);
+        king.setFill(Color.DARKGREEN);
+        king.setStroke(Color.DARKGREEN);
+        king.setStrokeWidth(checkersGame.TILE_SIZE * 0.03);
+
+        king.setTranslateX((checkersGame.TILE_SIZE - checkersGame.TILE_SIZE * 0.3125 * 2) / 2 );
+        king.setTranslateY((checkersGame.TILE_SIZE - checkersGame.TILE_SIZE * 0.26 * 2) / 2 + checkersGame.TILE_SIZE * 0.07);
+
+//        getChildren().add(king);
+    }
     private checkersMoveResult tryMove(checkersPiece checkersPiece, int newX, int newY){
         if (board[newX][newY].hasPiece() || newX + newY % 2 == 0){
             return new checkersMoveResult(checkersMoveType.NONE);
@@ -107,9 +128,21 @@ public class checkersGame extends Application {
         int x0 = toBoard(checkersPiece.getOldX());
         int y0 = toBoard(checkersPiece.getOldY());
 
-        if (Math.abs(newX - x0) == 1 && (newY - y0) == checkersPiece.getType().moveDir){
-            return new checkersMoveResult(checkersMoveType.NORMAL);
+//        if (Math.abs(newX - x0) == 1 && (newY - y0) == checkersPiece.getType().moveDir){
+//            return new checkersMoveResult(checkersMoveType.NORMAL);
+//        }
+        if (Math.abs(newX - x0) == 1 && Math.abs(newY - y0) == 1){
+            if ((newY - y0) == checkersPiece.getType().moveDir){
+                return new checkersMoveResult(checkersMoveType.NORMAL);
+            }
+            else {
+
+                return new checkersMoveResult(checkersMoveType.KING);
+            }
         }
+//        else if ((newX - x0) == -1){
+//            return new checkersMoveResult(checkersMoveType.KING);
+//        }
         else if (Math.abs(newX - x0) == 2 && (newY - y0) == checkersPiece.getType().moveDir * 2){
             int x1 = x0 + (newX - x0) / 2 ;
             int y1 = y0 + (newY - y0) / 2 ;
@@ -118,6 +151,7 @@ public class checkersGame extends Application {
                 return new checkersMoveResult(checkersMoveType.KILL, board[x1][y1].getPiece());
             }
         }
+
         return new checkersMoveResult(checkersMoveType.NONE);
     }
 

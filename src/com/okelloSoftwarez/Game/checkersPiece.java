@@ -36,6 +36,15 @@ public class checkersPiece extends StackPane {
         ellipse.setTranslateX((checkersGame.TILE_SIZE - checkersGame.TILE_SIZE * 0.3125 * 2) / 2 );
         ellipse.setTranslateY((checkersGame.TILE_SIZE - checkersGame.TILE_SIZE * 0.26 * 2) / 2 );
 
+//        Ellipse king = new Ellipse(checkersGame.TILE_SIZE * 0.3125, checkersGame.TILE_SIZE * 0.26);
+//        king.setFill(Color.DARKGREEN);
+//        king.setStroke(Color.DARKGREEN);
+//        king.setStrokeWidth(checkersGame.TILE_SIZE * 0.03);
+//
+//        king.setTranslateX((checkersGame.TILE_SIZE - checkersGame.TILE_SIZE * 0.3125 * 2) / 2 );
+//        king.setTranslateY((checkersGame.TILE_SIZE - checkersGame.TILE_SIZE * 0.26 * 2) / 2 + checkersGame.TILE_SIZE * 0.07);
+
+
         getChildren().addAll(background, ellipse);
 
         setOnMousePressed(e -> {
@@ -68,4 +77,17 @@ public class checkersPiece extends StackPane {
     public void abortMove(){
         relocate(oldX, oldY);
     }
+
+//    public void setBackgroundKing(checkersPiece piece) {
+//
+//        Ellipse king = new Ellipse(checkersGame.TILE_SIZE * 0.3125, checkersGame.TILE_SIZE * 0.26);
+//        king.setFill(Color.DARKGREEN);
+//        king.setStroke(Color.DARKGREEN);
+//        king.setStrokeWidth(checkersGame.TILE_SIZE * 0.03);
+//
+//        king.setTranslateX((checkersGame.TILE_SIZE - checkersGame.TILE_SIZE * 0.3125 * 2) / 2 );
+//        king.setTranslateY((checkersGame.TILE_SIZE - checkersGame.TILE_SIZE * 0.26 * 2) / 2 + checkersGame.TILE_SIZE * 0.07);
+//
+//        getChildren().add(king);
+//    }
 }
