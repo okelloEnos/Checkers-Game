@@ -149,27 +149,49 @@ public class checkersGame extends Application {
         System.out.println(piece.getType() + ": t/f :" + piece.isKing());
 
         System.out.println("x0 : " + x0 + " newX : " + newX + " y0 : " + y0 + " newY : " + newY);
-        if (Math.abs(newX - x0) == 1 && Math.abs(newY - y0) == 1) {
-            piece.move(newX, newY);
-            board[x0][y0].setPiece(null);
-            board[newX][newY].setPiece(piece);
-//            return new checkersMoveResult(checkersMoveType.NORMAL);
-        }
+        int absX = Math.abs(newX - x0);
+        int absY = Math.abs(newY - y0);
+        if (absX == 1 && absY == 1) {
+            if (board[newX][newY].hasPiece()) {
 
-        else if (Math.abs(newX - x0) == 2){
-//             else if (Math.abs(newX - x0) == 2 && (newY - y0) == checkersPiece.getType().moveDir * 2) {
-            int kx1 = x0 + (newX - x0) / 2;
-            int ky1 = y0 + (newY - y0) / 2;
-
-            if (board[kx1][ky1].hasPiece() && board[kx1][ky1].getPiece().getType() != type ) {
+                piece.abortMove();
+            } else {
                 piece.move(newX, newY);
                 board[x0][y0].setPiece(null);
                 board[newX][newY].setPiece(piece);
+//            return new checkersMoveResult(checkersMoveType.NORMAL);
+            }
+        }
+        else if (absX == 2){
+//             else if (Math.abs(newX - x0) == 2 && (newY - y0) == checkersPiece.getType().moveDir * 2) {
+//            int kx1 = x0 + ( absX / 2 ); kx1 = 2
+//            int ky1 = y0 + (absY / 2 ); ky1 = 5
 
-                checkersPiece otherPiece = result.getPiece();
-                board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
-                pieceGroup.getChildren().remove(otherPiece);
+
+            int kx2 = (newX - x0) / 2 ;
+
+            int ky2 = (newY - y0) / 2 ;
+
+            int kx1 = x0 + kx2 ;
+//            int ky1 = y0 + ky2 ;
+            int ky1 = y0 + ky2 ;
+
+            if (board[kx1][ky1].hasPiece() ) {
+//                checkersPiece otherPiece = board[kx1][ky1].getPiece();
+                if (board[kx1][ky1].getPiece().getType() != type) {
+                    piece.move(newX, newY);
+                    board[x0][y0].setPiece(null);
+                    board[newX][newY].setPiece(piece);
+
+                    checkersPiece otherPiece = board[kx1][ky1].getPiece();
+                    board[kx1][ky1].setPiece(null);
+//                    board[toBoard(otherPiece.getOldX())][toBoard(otherPiece.getOldY())].setPiece(null);
+                    pieceGroup.getChildren().remove(otherPiece);
 //                return new checkersMoveResult(checkersMoveType.KILL, board[kx1][ky1].getPiece());
+                }
+                else {
+                    piece.abortMove();
+                }
             }
         }
         else {
@@ -220,7 +242,7 @@ public class checkersGame extends Application {
 //                        isKing = true;
 //                    System.out.println("King of B: " + checkersPiece.getType());
                         checkersPiece.setKing(true);
-                        checkersPiece.makeKing(checkersPiece);
+//                        checkersPiece.makeKing(checkersPiece);
 
 //                    System.out.println("King of : " + checkersPiece.getType() + "...Y..." + (newY - y0) + "...X..." + (newX - x0));
 //                    if (checkersPiece.getType().equals(checkersPieceType.KING_RED) && Math.abs(newX - x0) == 1 ){
